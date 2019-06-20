@@ -1,3 +1,4 @@
+// tslint:disable-next-line: import-name
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
