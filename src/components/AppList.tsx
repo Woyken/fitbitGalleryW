@@ -30,10 +30,8 @@ type Props = StateProps & DispatchProps & OwnProps;
 class AppList extends Component<Props> {
     componentWillMount() {
         this.props.thunkFetchAppList();
-        // TODO
-        // Do fetchs here.
-        // fetch().then(tojson).then(data logconsole...)
     }
+
     render() {
         return (
             <div className="hello">
