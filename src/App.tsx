@@ -5,6 +5,7 @@ import './App.css';
 import { Provider } from 'react-redux';
 import AppList from './components/AppList';
 import store from './store';
+import './App.sass';
 
 class App extends Component {
     render() {
