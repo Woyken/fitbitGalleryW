@@ -7,6 +7,7 @@ import { AppState } from '../store';
 import { thunkFetchAppList } from '../thunk';
 import { ThunkDispatch } from 'redux-thunk';
 import AppItem from './AppItem';
+import AppItemModal from './AppModal/AppItemModal';
 
 interface OwnProps {
     propFromParent: number;
@@ -21,12 +22,23 @@ interface DispatchProps {
     thunkFetchAppList: () => void;
 }
 
+interface OwnState {
+    isModalActive: boolean;
+}
+
 type Props = StateProps & DispatchProps & OwnProps;
 
-class AppList extends Component<Props> {
+class AppList extends Component<Props, OwnState> {
+    state = { isModalActive: true };
+    constructor(props: Props) {
+        super(props);
+    }
+
     componentWillMount() {
         this.props.thunkFetchAppList();
     }
+
+    onCloseModal() {}
 
     render() {
         return (
@@ -41,6 +53,23 @@ class AppList extends Component<Props> {
                         <AppItem key={item.id} item={item} />
                     ))}
                 </div>
+                <AppItemModal
+                    onClose={() => {
+                        const another = () => {
+                            this.setState((state) => {
+                                return {
+                                    ...state,
+                                    isModalActive: !state.isModalActive,
+                                };
+                            });
+                        };
+                        another();
+                        setTimeout(() => {
+                            another();
+                        }, 1000);
+                    }}
+                    isActive={this.state.isModalActive}
+                />
             </div>
         );
     }
