@@ -10,6 +10,7 @@ import store, { AppState } from '../store';
 import { thunkFetchAppList } from '../thunk';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { Action } from 'redux';
+import AppItem from './AppItem';
 
 interface OwnProps {
     propFromParent: number;
@@ -36,18 +37,21 @@ class AppList extends Component<Props> {
     render() {
         return (
             <div className="hello">
-                <div className="greeting">Hello {this.props.appList.apps.length}</div>
+                <div className="greeting">
+                    Hello {this.props.appList.apps.length}
+                </div>
                 <div>
-                    <button onClick={this.props.thunkFetchAppList}>
-                        +
-                    </button>
+                    <button onClick={this.props.thunkFetchAppList}>+</button>
                     <p> </p>
+                    {this.props.appList.apps.map((item) => (
+                        <AppItem key={item.id} item={item} />
+                    ))}
                 </div>
             </div>
         );
     }
 }
-
+//
 function mapStateToProps(state: AppState, ownProps: OwnProps): StateProps {
     return {
         fetchAppList,

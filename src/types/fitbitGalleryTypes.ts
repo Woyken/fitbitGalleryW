@@ -21,6 +21,7 @@ export interface FitbitGalleryListResponseDataCollectionPagedAppsApp {
     developer: FitbitGalleryListResponseDataCollectionPagedAppsAppDeveloper;
     name: string;
     type: string;
+    isPaid: boolean;
     __typename: string;
 }
 

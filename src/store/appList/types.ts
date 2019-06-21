@@ -1,8 +1,12 @@
 export interface App {
+    name: string;
+    type: string;
+    developerName: string;
+    previewImage: string;
     icon: string;
     id: string;
     description: string;
-
+    isPaid: boolean;
 }
 
 export interface AppListState {

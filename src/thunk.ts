@@ -15,9 +15,14 @@ export const thunkFetchAppList = (): ThunkAction<
     const asyncResp = await fetchAppsList();
     const appsList = asyncResp.data.collection.pagedApps.apps.map((a) => {
         const app: App = {
+            name: a.name,
+            type: a.type,
+            developerName: a.developer.name,
             description: a.description,
+            previewImage: a.previewImage.uri,
             icon: a.icon.uri,
             id: a.id,
+            isPaid: a.isPaid,
         };
         return app;
     });
@@ -52,7 +57,7 @@ function getAuthToken() {
     // TODO:
     // Move this to store.
     // Create parser from downloaded HTML page.
-    return 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMkRGTFAiLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJjbGllbnRfYWNjZXNzX3Rva2VuIiwic2NvcGVzIjoiIiwiZXhwIjoxNTYxMTEyOTIzLCJpYXQiOjE1NjEwMjY1MjN9.hkPXWOdzcRul_ZY60OTebnbhGZTtxzzdrdjC12VzdYw';
+    return 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMkRGTFAiLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJjbGllbnRfYWNjZXNzX3Rva2VuIiwic2NvcGVzIjoiIiwiZXhwIjoxNTYxMTk1NTI1LCJpYXQiOjE1NjExMDkxMjV9.tmXYxMfB9QSPJcmNnkz7c5umxXCmYgGjm7uEy3k9HI0';
 }
 
 const getCategory = graphqlTag`
@@ -100,6 +105,7 @@ const getCategory = graphqlTag`
     }
     name
     type
+    isPaid
     __typename
   }
 `;
