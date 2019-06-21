@@ -17,10 +17,24 @@ interface OwnProps {
 export default class AppItem extends Component<OwnProps> {
     render() {
         return (
-            <div>
-                <img src={this.props.item.previewImage}></img>
-                <h2>{this.props.item.isPaid + ''} {this.props.item.name}</h2>
-                <p>{this.props.item.description}</p>
+            <div className="card is-shady is-fullheight">
+                <div className="card-image">
+                    <figure className="image is-4by3">
+                        <img
+                            src={this.props.item.previewImage}
+                            alt="Preview Image"
+                        />
+                    </figure>
+                </div>
+                <div className="card-content">
+                    <div className="content">
+                        <h4>{this.props.item.name}</h4>
+                        {/* <p>{this.props.item.description}</p> */}
+                        <span className="button is-link modal-button">
+                            Modal card
+                        </span>
+                    </div>
+                </div>
             </div>
         );
     }

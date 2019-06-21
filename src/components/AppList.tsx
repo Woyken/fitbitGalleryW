@@ -29,7 +29,7 @@ interface OwnState {
 type Props = StateProps & DispatchProps & OwnProps;
 
 class AppList extends Component<Props, OwnState> {
-    state = { isModalActive: true };
+    state = { isModalActive: false };
     constructor(props: Props) {
         super(props);
     }
@@ -48,10 +48,15 @@ class AppList extends Component<Props, OwnState> {
                 </div>
                 <div>
                     <button onClick={this.props.thunkFetchAppList}>+</button>
-                    <p> </p>
-                    {this.props.appList.apps.map((item) => (
-                        <AppItem key={item.id} item={item} />
-                    ))}
+                    <div className="container">
+                        <div className="columns features is-multiline">
+                            {this.props.appList.apps.map((item, index) => (
+                                <div className="column is-3">
+                                    <AppItem key={item.id} item={item} />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
                 <AppItemModal
                     onClose={() => {
@@ -66,7 +71,7 @@ class AppList extends Component<Props, OwnState> {
                         another();
                         setTimeout(() => {
                             another();
-                        }, 1000);
+                        },         1000);
                     }}
                     isActive={this.state.isModalActive}
                 />
