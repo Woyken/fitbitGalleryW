@@ -11,17 +11,24 @@ export interface App {
 
 export interface AppListState {
     apps: App[];
+    isNextRequestOngoing: boolean;
+    doesMoreItemsExist: boolean;
+    nextPageId: string;
 }
 
-export const FETCH_APPLIST = 'FETCH_APPLIST';
+export const FETCH_APPLIST_NEXT_PAGE = 'FETCH_APPLIST_NEXT_PAGE';
 
-interface FetchAppList {
-    type: typeof FETCH_APPLIST;
-    payload: App[];
+interface FetchAppListNextPage {
+    type: typeof FETCH_APPLIST_NEXT_PAGE;
+    payload: {
+        apps: App[];
+        isNextRequestOngoing: boolean;
+        doesMoreItemsExist: boolean;
+        nextPageId: string;
+    };
 }
 
-export type AppListActionTypes = FetchAppList;
-
+export type AppListActionTypes = FetchAppListNextPage;
 
 // export interface Message {
 //     user: string;

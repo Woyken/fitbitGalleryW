@@ -19,7 +19,7 @@ export default class AppItem extends Component<OwnProps> {
         return (
             <div className="card is-shady is-fullheight">
                 <div className="card-image">
-                    <figure className="image is-4by3">
+                    <figure className="image">
                         <img
                             src={this.props.item.previewImage}
                             alt="Preview Image"

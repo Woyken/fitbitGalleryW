@@ -2,19 +2,20 @@
 import React, { Component } from 'react';
 
 interface OwnProps {
-    isActive: boolean;
+    // isActive: boolean;
+    appId?: string;
     onClose: () => void;
 }
 
 export default class AppItemModal extends Component<OwnProps> {
 
     componentDidUpdate(prevProps: Readonly<OwnProps>) {
-        if (this.props.isActive && !prevProps.isActive) {
+        if (this.props.appId && !prevProps.appId) {
             document.getElementsByTagName('html')[0].style.overflow = 'hidden';
             document.getElementsByTagName('body')[0].style.overflowY = 'scroll';
         }
 
-        if (!this.props.isActive && prevProps.isActive) {
+        if (!this.props.appId && prevProps.appId) {
             document.getElementsByTagName('html')[0].style.overflow = '';
             document.getElementsByTagName('body')[0].style.overflowY = '';
         }
@@ -24,7 +25,7 @@ export default class AppItemModal extends Component<OwnProps> {
         return (
             <div
                 id="modal-card"
-                className={`modal ${this.props.isActive ? ' is-active' : ''}`}
+                className={`modal ${this.props.appId ? ' is-active' : ''}`}
             >
                 <div
                     onClick={this.props.onClose}

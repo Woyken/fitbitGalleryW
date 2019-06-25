@@ -1,11 +1,14 @@
 import {
     AppListState,
     AppListActionTypes,
-    FETCH_APPLIST,
+    FETCH_APPLIST_NEXT_PAGE,
 } from './types';
 
 const initialState: AppListState = {
     apps: [],
+    doesMoreItemsExist: true,
+    isNextRequestOngoing: false,
+    nextPageId: '',
 };
 
 export function appListReducer(
@@ -13,9 +16,12 @@ export function appListReducer(
     action: AppListActionTypes,
 ): AppListState {
     switch (action.type) {
-        case FETCH_APPLIST:
+        case FETCH_APPLIST_NEXT_PAGE:
             return {
-                apps: [/*...state.apps, */...action.payload],
+                apps: [...state.apps, ...action.payload.apps],
+                doesMoreItemsExist: action.payload.doesMoreItemsExist,
+                isNextRequestOngoing: action.payload.isNextRequestOngoing,
+                nextPageId: action.payload.nextPageId,
             };
 
         default:

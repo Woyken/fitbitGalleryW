@@ -47,3 +47,17 @@ export interface FitbitGalleryListResponseData {
 export interface FitbitGalleryListResponseRoot {
     data: FitbitGalleryListResponseData;
 }
+
+export interface FitbitConfigurationResponseApiConfigAuthToken {
+    accessToken: string;
+    expiresAt: number;
+}
+
+export interface FitbitConfigurationResponseApiConfig {
+    galleryApiUrl: string;
+    authToken: FitbitConfigurationResponseApiConfigAuthToken;
+}
+
+export interface FitbitConfigurationResponseRoot {
+    apiConfig: FitbitConfigurationResponseApiConfig;
+}

@@ -6,6 +6,8 @@
             4,
             {"SwitchCase": 1}
           ],
-          "ter-arrow-parens": true
+          "ter-arrow-parens": true,
+          "import-name": false,
+          "no-increment-decrement": false
     }
 }
