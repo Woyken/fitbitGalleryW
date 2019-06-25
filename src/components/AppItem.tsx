@@ -29,10 +29,7 @@ export default class AppItem extends Component<OwnProps> {
                 <div className="card-content">
                     <div className="content">
                         <h4>{this.props.item.name}</h4>
-                        {/* <p>{this.props.item.description}</p> */}
-                        <span className="button is-link modal-button">
-                            Modal card
-                        </span>
+                        {this.props.item.isPaid && <h2>PAID</h2>}
                     </div>
                 </div>
             </div>

@@ -99,7 +99,7 @@ class AppList extends Component<Props, OwnState> {
         );
     }
 }
-//
+
 function mapStateToProps(state: AppState, ownProps: OwnProps): StateProps {
     return {
         fetchNextPageAppList,

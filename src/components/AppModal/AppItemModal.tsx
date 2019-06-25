@@ -1,5 +1,17 @@
 // tslint:disable-next-line: import-name
 import React, { Component } from 'react';
+import {
+    FitbitGalleryAppDetailsResponseAvailability,
+    FitbitGalleryAppDetailsResponsePreviewImage,
+    FitbitGalleryAppDetailsResponseIcon,
+    FitbitGalleryAppDetailsResponseApp,
+} from '../../types/fitbitGalleryTypes';
+import { ConfigurationState } from '../../store/configuration/types';
+import { AppState } from '../../store';
+import { connect } from 'react-redux';
+import { AppDetails } from '../../actions/getAppDetails';
+import AliceCarousel from 'react-alice-carousel';
+import 'react-alice-carousel/lib/alice-carousel.css';
 
 interface OwnProps {
     // isActive: boolean;
@@ -7,21 +19,58 @@ interface OwnProps {
     onClose: () => void;
 }
 
-export default class AppItemModal extends Component<OwnProps> {
+interface AppDetailsData extends FitbitGalleryAppDetailsResponseApp {}
 
-    componentDidUpdate(prevProps: Readonly<OwnProps>) {
+interface StateProps {
+    configs: ConfigurationState;
+}
+
+interface OwnState {
+    appsDetails: AppDetailsData[];
+    currentDetails?: AppDetailsData;
+}
+
+type Props = StateProps & OwnProps;
+
+class AppItemModal extends Component<Props, OwnState> {
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            appsDetails: [],
+        };
+    }
+    async componentDidUpdate(prevProps: Readonly<OwnProps>) {
         if (this.props.appId && !prevProps.appId) {
             document.getElementsByTagName('html')[0].style.overflow = 'hidden';
             document.getElementsByTagName('body')[0].style.overflowY = 'scroll';
+            const currentAppDetails = await this.retrieveAppDetails(
+                this.props.appId!,
+            );
+            this.setState((state) => {
+                return {
+                    ...state,
+                    currentDetails: currentAppDetails,
+                };
+            });
         }
 
         if (!this.props.appId && prevProps.appId) {
             document.getElementsByTagName('html')[0].style.overflow = '';
             document.getElementsByTagName('body')[0].style.overflowY = '';
+            this.setState((state) => {
+                return {
+                    ...state,
+                    currentDetails: undefined,
+                };
+            });
         }
     }
 
     render() {
+        if (!this.state.currentDetails) {
+            return <div />;
+        }
+
         return (
             <div
                 id="modal-card"
@@ -34,11 +83,29 @@ export default class AppItemModal extends Component<OwnProps> {
                 <div className="modal-content is-tiny">
                     <div className="card">
                         <div className="card-image">
-                            <div className="image is-4by3">
-                                <img
-                                    src="https://source.unsplash.com/6Ticnhs1AG0"
-                                    alt="Placeholder image"
-                                />
+                            <div className="columns is-centered is-mobile">
+                                <div className="column is-5">
+                                    <AliceCarousel
+                                        mouseDragEnabled
+                                        autoPlay
+                                        autoPlayInterval={3000}
+                                        buttonsDisabled
+                                        autoHeight
+                                    >
+                                        {this.state.currentDetails.screenshots.map(
+                                            (screenshot) => {
+                                                return (
+                                                    <div className="image">
+                                                        <img
+                                                            src={screenshot.uri}
+                                                            alt="Placeholder image"
+                                                        />
+                                                    </div>
+                                                );
+                                            },
+                                        )}
+                                    </AliceCarousel>
+                                </div>
                             </div>
                         </div>
                         <div className="card-content">
@@ -46,40 +113,58 @@ export default class AppItemModal extends Component<OwnProps> {
                                 <div className="media-left">
                                     <div className="image is-48x48">
                                         <img
-                                            src="http://www.radfaces.com/images/avatars/linda-barret.jpg"
+                                            src={
+                                                this.state.currentDetails
+                                                    .previewImage.uri
+                                            }
                                             alt="linda barret avatar"
                                         />
                                     </div>
                                 </div>
                                 <div className="media-content">
-                                    <p className="title is-4">Jane Doe</p>
-                                    <p className="subtitle is-6">@jane_doe</p>
+                                    <p className="title is-4">
+                                        {this.state.currentDetails.name}
+                                    </p>
+                                    <p className="subtitle is-6">
+                                        {
+                                            this.state.currentDetails.developer
+                                                .name
+                                        }
+                                    </p>
                                 </div>
                             </div>
                             <div className="content">
-                                Laum Ipsum junkah potatoes bookin' it. Moosetown
-                                rig up I'm tellin' you way up north bookin' it
-                                can't get theyah from heeyah native bean suppah
-                                whawf Powrtland Museum of Aht, back woods hawsun
-                                around the pit mummah Yessah, mummah muckle
-                                riyht on'ta her Bean's dinnahbucket bub geez bud
-                                sumpin' fierce ayuhpawt Bangah naw, Powrtland
-                                Museum of Aht down cellah sumpin' fierce hoppa
-                                bub If you can't stand the wintah you don't
-                                deserve the summah slower than molasses going
-                                uphill in January. Sgn'wahl shoggor hrii uaaah
-                                R'lyeh uh'e k'yarnak Hastur hupadgh li'hee, hai
-                                f'nilgh'ri nilgh'ri n'ghftor ngftaghu vulgtlagln
-                                h'hrii throd Nyarlathotep lloig, naflsll'ha
-                                nnnsll'ha athg y-ebunma goka chtenff ehyeog
-                                cehye. Zhro y'hah nogoth phlegeth stell'bsna
-                                orr'e ph'Hastur gnaiih throd, uln ya lw'nafh mg
-                                nar'luh li'hee wgah'n, sgn'wahl mg nakadishtu
-                                chlirgh hupadgh tharanak h'gnaiih.
-                                <a>@bulmaio</a>.<a href="#">#css</a>
-                                <a href="#">#responsive</a>
-                                <br />
-                                <p>12:45 AM - 20 June 2018</p>
+                                <div>
+                                    Devices:
+                                    {this.state.currentDetails.availability.deviceTypes.map(
+                                        (device) => (
+                                            <div>{device.productName}</div>
+                                        ),
+                                    )}
+                                </div>
+                                <a
+                                    className="button is-info"
+                                    href={`https://gallery.fitbit.com/details/${
+                                        this.state.currentDetails.id
+                                    }`}
+                                    target="_blank"
+                                >
+                                    To Fitbit
+                                </a>
+                                <a
+                                    className="button is-primary"
+                                    href={`https://gallery.fitbit.com/details/${
+                                        this.state.currentDetails.id
+                                    }/OpenApp`}
+                                    target="_blank"
+                                >
+                                    Open App
+                                </a>
+                                {this.state.currentDetails.description
+                                    .split('\n')
+                                    .map((item, i) => {
+                                        return <p key={i}>{item}</p>;
+                                    })}
                             </div>
                         </div>
                     </div>
@@ -88,4 +173,36 @@ export default class AppItemModal extends Component<OwnProps> {
             </div>
         );
     }
+
+    async retrieveAppDetails(appId: string) {
+        const found = this.state.appsDetails.find((details) => {
+            return details.id === appId;
+        });
+        if (found) {
+            return found;
+        }
+        const response = await AppDetails.fetchAppDetails(
+            this.props.configs.authToken.accessToken,
+            this.props.configs.galleryApiUrl,
+            this.props.appId!,
+        );
+        this.setState((state) => {
+            return {
+                ...state,
+                appsDetails: [...state.appsDetails, response.data.app],
+            };
+        });
+        return response.data.app;
+    }
 }
+
+function mapStateToProps(state: AppState, ownProps: OwnProps): StateProps {
+    return {
+        configs: state.config,
+    };
+}
+
+export default connect<StateProps, {}, OwnProps, AppState>(mapStateToProps)(
+    // It's somehow treating props as never type. Cast to any for now.
+    AppItemModal as any,
+);
