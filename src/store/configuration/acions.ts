@@ -46,7 +46,7 @@ async function getAuthTokenAndEndpoint() {
             authToken: {
                 accessToken:
                     // tslint:disable-next-line: max-line-length
-                    'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMkRGTFAiLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJjbGllbnRfYWNjZXNzX3Rva2VuIiwic2NvcGVzIjoiIiwiZXhwIjoxNTYxNTI2NzI2LCJpYXQiOjE1NjE0NDAzMjZ9.oLVfbSBogWW5COC4-J0Ex1uYk7Vd_kEZnH6UPWWW5cY',
+                    'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMkRGTFAiLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJjbGllbnRfYWNjZXNzX3Rva2VuIiwic2NvcGVzIjoiIiwiZXhwIjoxNTYxNjA5NTk5LCJpYXQiOjE1NjE1MjMxOTl9.F9YKiETsCBunnbM0Y04L-T9Jyb4ypBj73i90ZggtPoQ',
                 expiresAt: 1561361126,
             },
             galleryApiUrl: 'https://api.fitbit.com/1/desktop-gallery/graphql',
