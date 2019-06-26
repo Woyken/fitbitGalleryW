@@ -1,6 +1,6 @@
 workflow "Deploy to Github Pages" {
   on = "push"
-  resolves = ["Deploy to gh-pages"]
+  resolves = ["Deploy to branch 'gh-pages'"]
 }
 
 action "master branch only" {
@@ -8,7 +8,7 @@ action "master branch only" {
   args = "branch master"
 }
 
-action "Deploy to gh-pages" {
+action "Deploy to branch 'gh-pages'" {
   uses = "JamesIves/github-pages-deploy-action@master"
   env = {
     BRANCH = "gh-pages"
