@@ -95,16 +95,18 @@ class AppList extends Component<Props, OwnState> {
                         <div
                             className="column is-half-mobile is-2"
                             key={app.id}
-                            onClick={() => {
-                                this.setState((state) => {
-                                    return {
-                                        ...state,
-                                        modalAppIdShow: app.id,
-                                    };
-                                });
-                            }}
                         >
-                            <AppItem item={app} />
+                            <AppItem
+                                item={app}
+                                onClick={() => {
+                                    this.setState((state) => {
+                                        return {
+                                            ...state,
+                                            modalAppIdShow: app.id,
+                                        };
+                                    });
+                                }}
+                            />
                         </div>
                     ))}
                 </div>

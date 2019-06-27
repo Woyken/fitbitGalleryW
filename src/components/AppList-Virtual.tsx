@@ -105,10 +105,11 @@ class AppList extends Component<Props, OwnState> {
             //     </div>
             // );
             content = (
-                <div
-                    key={this.props.appList.apps[index].id}
-                >
-                    <AppItem item={this.props.appList.apps[index]} />
+                <div key={this.props.appList.apps[index].id}>
+                    <AppItem
+                        item={this.props.appList.apps[index]}
+                        onClick={() => {}}
+                    />
                 </div>
             );
         }

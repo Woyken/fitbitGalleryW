@@ -12,12 +12,16 @@ interface OwnProps {
         description: string;
         isPaid: boolean;
     };
+    onClick: () => void;
 }
 
 export default class AppItem extends Component<OwnProps> {
     render() {
         return (
-            <div className="card is-shady is-fullheight">
+            <div
+                className="card is-shady is-fullheight"
+                onClick={this.props.onClick}
+            >
                 <div className="card-image">
                     <figure className="image">
                         <img
