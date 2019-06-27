@@ -1,17 +1,22 @@
 // tslint:disable-next-line: import-name
 import React, { Component } from 'react';
-import {
-    FitbitGalleryAppDetailsResponseAvailability,
-    FitbitGalleryAppDetailsResponsePreviewImage,
-    FitbitGalleryAppDetailsResponseIcon,
-    FitbitGalleryAppDetailsResponseApp,
-} from '../../types/fitbitGalleryTypes';
+import { FitbitGalleryAppDetailsResponseApp } from '../../types/fitbitGalleryTypes';
 import { ConfigurationState } from '../../store/configuration/types';
-import { AppState } from '../../store';
+import store, { AppState } from '../../store';
 import { connect } from 'react-redux';
 import { AppDetails } from '../../actions/getAppDetails';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons';
+import {
+    saveApp,
+    removeSavedApp,
+    saveSavedApps,
+    loadSavedApps,
+} from '../../store/savedApps/actions';
+import { SavedAppsState } from '../../store/savedApps/types';
 
 interface OwnProps {
     // isActive: boolean;
@@ -19,10 +24,13 @@ interface OwnProps {
     onClose: () => void;
 }
 
-interface AppDetailsData extends FitbitGalleryAppDetailsResponseApp {}
+interface AppDetailsData extends FitbitGalleryAppDetailsResponseApp {
+    isSaved: boolean;
+}
 
 interface StateProps {
     configs: ConfigurationState;
+    savedApps: SavedAppsState;
 }
 
 interface OwnState {
@@ -39,17 +47,50 @@ class AppItemModal extends Component<Props, OwnState> {
             appsDetails: [],
         };
     }
-    async componentDidUpdate(prevProps: Readonly<OwnProps>) {
+
+    componentWillMount() {
+        store.dispatch(loadSavedApps());
+    }
+
+    async componentDidUpdate(prevProps: Readonly<Props>) {
+        if (this.props.appId && this.props.savedApps !== prevProps.savedApps) {
+            // Saved apps have updated, check for current again.
+            const isSaved =
+                this.props.savedApps.savedApps.findIndex((app) => {
+                    return app.id === this.props.appId;
+                }) >= 0;
+
+            this.setState((state) => {
+                let currentDetails: AppDetailsData | undefined = undefined;
+                if (state.currentDetails) {
+                    currentDetails = {
+                        ...state.currentDetails,
+                        isSaved,
+                    };
+                }
+                return {
+                    ...state,
+                    currentDetails,
+                };
+            });
+        }
+
         if (this.props.appId && !prevProps.appId) {
             document.getElementsByTagName('html')[0].style.overflow = 'hidden';
             document.getElementsByTagName('body')[0].style.overflowY = 'scroll';
             const currentAppDetails = await this.retrieveAppDetails(
                 this.props.appId!,
             );
+
+            const isSaved =
+                this.props.savedApps.savedApps.findIndex((app) => {
+                    return app.id === this.props.appId;
+                }) >= 0;
+
             this.setState((state) => {
                 return {
                     ...state,
-                    currentDetails: currentAppDetails,
+                    currentDetails: { ...currentAppDetails, isSaved },
                 };
             });
         }
@@ -64,6 +105,26 @@ class AppItemModal extends Component<Props, OwnState> {
                 };
             });
         }
+    }
+
+    saveCurrentApp() {
+        if (!this.props.appId) {
+            return;
+        }
+
+        // TODO convert this action to thunk and call save inside
+        store.dispatch(saveApp({ id: this.props.appId }));
+        store.dispatch(saveSavedApps(store.getState().savedApps));
+    }
+
+    removeCurrentAppFromSaved() {
+        if (!this.props.appId) {
+            return;
+        }
+
+        // TODO convert this action to thunk and call save inside
+        store.dispatch(removeSavedApp({ id: this.props.appId }));
+        store.dispatch(saveSavedApps(store.getState().savedApps));
     }
 
     render() {
@@ -109,6 +170,24 @@ class AppItemModal extends Component<Props, OwnState> {
                             </div>
                         </div>
                         <div className="card-content">
+                            <div
+                                onClick={
+                                    this.state.currentDetails.isSaved
+                                        ? this.removeCurrentAppFromSaved.bind(
+                                              this,
+                                          )
+                                        : this.saveCurrentApp.bind(this)
+                                }
+                            >
+                                <FontAwesomeIcon
+                                    icon={
+                                        this.state.currentDetails.isSaved
+                                            ? fasHeart
+                                            : farHeart
+                                    }
+                                    size="3x"
+                                />
+                            </div>
                             <div className="media">
                                 <div className="media-left">
                                     <div className="image is-48x48">
@@ -189,7 +268,10 @@ class AppItemModal extends Component<Props, OwnState> {
         this.setState((state) => {
             return {
                 ...state,
-                appsDetails: [...state.appsDetails, response.data.app],
+                appsDetails: [
+                    ...state.appsDetails,
+                    { ...response.data.app, isSaved: false },
+                ],
             };
         });
         return response.data.app;
@@ -199,6 +281,7 @@ class AppItemModal extends Component<Props, OwnState> {
 function mapStateToProps(state: AppState, ownProps: OwnProps): StateProps {
     return {
         configs: state.config,
+        savedApps: state.savedApps,
     };
 }
 

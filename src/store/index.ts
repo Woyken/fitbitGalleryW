@@ -3,10 +3,12 @@ import { appListReducer } from './appList/reducers';
 import { combineReducers, applyMiddleware, createStore, compose } from 'redux';
 import reduxThunk from 'redux-thunk';
 import { configurationReducer } from './configuration/reducers';
+import { savedAppsReducer } from './savedApps/reducers';
 
 const rootReducer = combineReducers({
     appList: appListReducer,
     config: configurationReducer,
+    savedApps: savedAppsReducer,
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

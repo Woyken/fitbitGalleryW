@@ -14,10 +14,18 @@ enum PriceFilterEnum {
     Paid,
 }
 
-const priceFilterDisplay: { displayName: string; id: PriceFilterEnum }[] = [
-    { displayName: 'Paid & Free', id: PriceFilterEnum.PaidFree },
-    { displayName: 'Free', id: PriceFilterEnum.Free },
-    { displayName: 'Paid', id: PriceFilterEnum.Paid },
+const priceFilterDisplay: {
+    displayName: string;
+    id: PriceFilterEnum;
+    value: boolean | undefined;
+}[] = [
+    {
+        displayName: 'Paid & Free',
+        id: PriceFilterEnum.PaidFree,
+        value: undefined,
+    },
+    { displayName: 'Free', id: PriceFilterEnum.Free, value: false },
+    { displayName: 'Paid', id: PriceFilterEnum.Paid, value: true },
 ];
 
 interface OwnState {
@@ -41,26 +49,14 @@ class App extends Component<{}, OwnState> {
                             prefixText="Price: "
                             items={priceFilterDisplay}
                             onSelectionChanged={(id: PriceFilterEnum) => {
-                                let isPaidNew: boolean | undefined = undefined;
-                                switch (id) {
-                                    case PriceFilterEnum.PaidFree:
-                                        isPaidNew = undefined;
-                                        break;
-                                    case PriceFilterEnum.Free:
-                                        isPaidNew = false;
-                                        break;
-                                    case PriceFilterEnum.Paid:
-                                        isPaidNew = true;
-                                        break;
-                                    default:
-                                        break;
-                                }
                                 this.setState((state) => {
                                     return {
                                         ...state,
                                         currentFilter: {
                                             ...state.currentFilter,
-                                            isPaid: isPaidNew,
+                                            isPaid: priceFilterDisplay.find(
+                                                (filter) => filter.id === id,
+                                            )!.value,
                                         },
                                     };
                                 });
