@@ -1,16 +1,21 @@
 // tslint:disable-next-line: import-name
 import React, { Component, PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { AppListState } from '../store/appList/types';
+import { AppListState, App } from '../store/appList/types';
 import { AppState } from '../store';
 import { ThunkDispatch } from 'redux-thunk';
 import { FixedSizeList, ListOnItemsRenderedProps } from 'react-window';
 import AppItem from './AppItem';
 import { fetchNextPageAppList } from '../store/appList/actions';
 import AppItemModal from './AppModal/AppItemModal';
+import {
+    filterAppList,
+    AppListFilter,
+    areAppListFiltersEqual,
+} from '../store/appList/filter';
 
 interface OwnProps {
-    propFromParent: number;
+    filter: AppListFilter;
 }
 
 interface StateProps {
@@ -24,6 +29,7 @@ interface DispatchProps {
 
 interface OwnState {
     modalAppIdShow?: string;
+    filteredAppList: App[];
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
@@ -31,11 +37,36 @@ type Props = StateProps & DispatchProps & OwnProps;
 class AppList extends Component<Props, OwnState> {
     constructor(props: Props) {
         super(props);
-        this.state = {};
+        this.state = {
+            filteredAppList: filterAppList(
+                this.props.appList,
+                this.props.filter,
+            ),
+        };
     }
 
     componentWillMount() {
         this.props.thunkFetchAppList();
+    }
+
+    componentDidUpdate(
+        prevProps: Readonly<Props>,
+        prevState: Readonly<OwnState>,
+    ) {
+        if (
+            prevProps.appList !== this.props.appList ||
+            !areAppListFiltersEqual(prevProps.filter, this.props.filter)
+        ) {
+            this.setState((state) => {
+                return {
+                    ...state,
+                    filteredAppList: filterAppList(
+                        this.props.appList,
+                        this.props.filter,
+                    ),
+                };
+            });
+        }
     }
 
     onCloseModal() {}
@@ -60,7 +91,7 @@ class AppList extends Component<Props, OwnState> {
         return (
             <div className="container">
                 <div className="columns is-multiline">
-                    {this.props.appList.apps.map((app) => (
+                    {this.state.filteredAppList.map((app) => (
                         <div
                             className="column is-half-mobile is-2"
                             key={app.id}
@@ -101,6 +132,7 @@ class AppList extends Component<Props, OwnState> {
 }
 
 function mapStateToProps(state: AppState, ownProps: OwnProps): StateProps {
+    console.log('mapping...');
     return {
         fetchNextPageAppList,
         appList: state.appList,
