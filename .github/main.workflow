@@ -3,6 +3,11 @@ workflow "Deploy to Github Pages" {
   resolves = ["Deploy to branch 'gh-pages'"]
 }
 
+workflow "New workflow" {
+  on = "schedule(0 */12 * * *)"
+  resolves = ["Deploy to branch 'gh-pages'"]
+}
+
 action "master branch only" {
   uses = "actions/bin/filter@master"
   args = "branch master"
