@@ -90,10 +90,10 @@ class AppList extends Component<Props, OwnState> {
     render() {
         return (
             <div className="container">
-                <div className="columns is-multiline">
+                <div className="columns is-multiline is-mobile">
                     {this.state.filteredAppList.map((app) => (
                         <div
-                            className="column is-half-mobile is-2"
+                            className="column is-half-mobile is-2-desktop"
                             key={app.id}
                         >
                             <AppItem
