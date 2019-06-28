@@ -111,8 +111,16 @@ class AppList extends Component<Props, OwnState> {
                     ))}
                 </div>
                 <div
-                    className="button is-primary"
-                    onClick={this.loadMoreItems.bind(this)}
+                    className={`button is-primary ${
+                        this.props.appList.isNextRequestOngoing
+                            ? 'is-loading'
+                            : ''
+                    }`}
+                    onClick={
+                        this.props.appList.isNextRequestOngoing
+                            ? () => {}
+                            : this.loadMoreItems.bind(this)
+                    }
                 >
                     Load more
                 </div>
