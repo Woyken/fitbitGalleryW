@@ -1,19 +1,14 @@
-workflow "Deploy to Github Pages" {
+workflow "On Push - Deploy to Github Pages" {
   on = "push"
-  resolves = ["Deploy to branch 'gh-pages'"]
+  resolves = ["On Push - Deploy to branch 'gh-pages'"]
 }
 
-workflow "New workflow" {
-  on = "schedule(0 */12 * * *)"
-  resolves = ["Deploy to branch 'gh-pages'"]
-}
-
-action "master branch only" {
+action "On Push - master branch only" {
   uses = "actions/bin/filter@master"
   args = "branch master"
 }
 
-action "Deploy to branch 'gh-pages'" {
+action "On Push - Deploy to branch 'gh-pages'" {
   uses = "JamesIves/github-pages-deploy-action@master"
   env = {
     BRANCH = "gh-pages"
@@ -21,5 +16,26 @@ action "Deploy to branch 'gh-pages'" {
     FOLDER = "build"
   }
   secrets = ["ACCESS_TOKEN"]
-  needs = ["master branch only"]
+  needs = ["On Push - master branch only"]
+}
+
+workflow "Scheduled - Deploy to Github Pages" {
+  on = "schedule(0 */6 * * *)"
+  resolves = ["Scheduled - Deploy to branch 'gh-pages'"]
+}
+
+action "Scheduled - master branch only" {
+  uses = "actions/bin/filter@master"
+  args = "branch master"
+}
+
+action "Scheduled - Deploy to branch 'gh-pages'" {
+  uses = "JamesIves/github-pages-deploy-action@master"
+  env = {
+    BRANCH = "gh-pages"
+    BUILD_SCRIPT = "npm install && npm run-script build"
+    FOLDER = "build"
+  }
+  secrets = ["ACCESS_TOKEN"]
+  needs = ["Scheduled - master branch only"]
 }
