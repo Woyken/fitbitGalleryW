@@ -1,7 +1,6 @@
 // tslint:disable-next-line: import-name
 import React, { Component, PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { AppListState } from '../store/appList/types';
 import { AppState } from '../store';
 import { ThunkDispatch } from 'redux-thunk';
 import { FixedSizeList, ListOnItemsRenderedProps } from 'react-window';
@@ -9,6 +8,7 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import InfiniteLoader from 'react-window-infinite-loader';
 import AppItem from './AppItem';
 import { fetchNextPageAppList } from '../store/appList/actions';
+import { AppHeadsListState } from '../store/appList/types';
 
 interface OwnProps {
     propFromParent: number;
@@ -16,7 +16,7 @@ interface OwnProps {
 
 interface StateProps {
     fetchNextPageAppList: typeof fetchNextPageAppList;
-    appList: AppListState;
+    appList: AppHeadsListState;
 }
 
 interface DispatchProps {
@@ -44,15 +44,6 @@ class AppList extends Component<Props, OwnState> {
     private loadingRowsPromises: Promise<void>[] = [];
 
     async loadMoreItems(startIndex: number, stopIndex: number): Promise<void> {
-        console.log(
-            startIndex +
-                ' ' +
-                stopIndex +
-                ' load more rows ' +
-                this.props.appList.isNextRequestOngoing,
-        );
-        if (this.props.appList.isNextRequestOngoing) {
-        }
         await Promise.all(this.loadingRowsPromises);
         const fetching = this.props.thunkFetchAppList();
         this.loadingRowsPromises.push(fetching);
@@ -65,15 +56,15 @@ class AppList extends Component<Props, OwnState> {
     }
 
     itemCount() {
-        return this.props.appList.doesMoreItemsExist
-            ? Math.ceil(this.props.appList.apps.length) + 1
-            : Math.ceil(this.props.appList.apps.length);
+        return this.props.appList.appsList.doesMoreItemsExist
+            ? Math.ceil(this.props.appList.appsList.apps.length) + 1
+            : Math.ceil(this.props.appList.appsList.apps.length);
     }
 
     isItemLoaded(index: number) {
         return (
-            !this.props.appList.doesMoreItemsExist ||
-            index * 6 < this.props.appList.apps.length
+            !this.props.appList.appsList.doesMoreItemsExist ||
+            index * 6 < this.props.appList.appsList.apps.length
         );
     }
 
@@ -105,9 +96,9 @@ class AppList extends Component<Props, OwnState> {
             //     </div>
             // );
             content = (
-                <div key={this.props.appList.apps[index].id}>
+                <div key={this.props.appList.appsList.apps[index].id}>
                     <AppItem
-                        item={this.props.appList.apps[index]}
+                        item={this.props.appList.appsList.apps[index]}
                         onClick={() => {}}
                     />
                 </div>

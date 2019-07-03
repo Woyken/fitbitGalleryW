@@ -2,11 +2,12 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Provider } from 'react-redux';
-import AppList from './components/AppList';
 import store from './store';
 import './App.sass';
-import { Dropdown } from './components/DropdownFilter/DropdownFilter';
 import { AppListFilter } from './store/appList/filter';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import WatchFaceList from './components/WatchFaceList';
+import AppsList from './components/AppsList';
 
 enum PriceFilterEnum {
     PaidFree,
@@ -44,26 +45,21 @@ class App extends Component<{}, OwnState> {
         return (
             <Provider store={store}>
                 <div className="App">
-                    <header className="App-header">
-                        <Dropdown
-                            prefixText="Price: "
-                            items={priceFilterDisplay}
-                            onSelectionChanged={(id: PriceFilterEnum) => {
-                                this.setState((state) => {
-                                    return {
-                                        ...state,
-                                        currentFilter: {
-                                            ...state.currentFilter,
-                                            isPaid: priceFilterDisplay.find(
-                                                (filter) => filter.id === id,
-                                            )!.value,
-                                        },
-                                    };
-                                });
-                            }}
-                        />
-                        <AppList filter={this.state.currentFilter} />
-                    </header>
+                    <Tabs selectedTabClassName="is-active">
+                        <div className="tabs is-centered is-boxed">
+                            <TabList>
+                                <Tab><a>Watch Faces</a></Tab>
+                                <Tab><a>Apps</a></Tab>
+                            </TabList>
+                        </div>
+
+                        <TabPanel>
+                            <WatchFaceList />
+                        </TabPanel>
+                        <TabPanel>
+                            <AppsList />
+                        </TabPanel>
+                    </Tabs>
                 </div>
             </Provider>
         );

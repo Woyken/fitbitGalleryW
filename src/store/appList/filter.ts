@@ -1,4 +1,4 @@
-import { AppListState, App } from './types';
+import { AppHeadsListState, AppHead, AppHeadsList } from './types';
 
 export interface AppListFilter {
     isPaid?: boolean;
@@ -11,16 +11,16 @@ export function areAppListFiltersEqual(f1: AppListFilter, f2: AppListFilter) {
 }
 
 export function filterAppList(
-    state: AppListState,
+    fullList: AppHeadsList,
     filter: AppListFilter,
-): App[] {
-    const filteredApps = state.apps.filter((app) => {
+): AppHead[] {
+    const filteredApps = fullList.apps.filter((app) => {
         return compareAgainstFilter(app, filter);
     });
     return filteredApps;
 }
 
-function compareAgainstFilter(app: App, filter: AppListFilter): boolean {
+function compareAgainstFilter(app: AppHead, filter: AppListFilter): boolean {
     let validAgainstFilter = true;
     if (filter.isPaid !== undefined) {
         validAgainstFilter = app.isPaid === filter.isPaid;

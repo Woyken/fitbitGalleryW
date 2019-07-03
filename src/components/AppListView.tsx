@@ -1,10 +1,8 @@
 // tslint:disable-next-line: import-name
 import React, { Component, PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { AppListState, App } from '../store/appList/types';
 import { AppState } from '../store';
 import { ThunkDispatch } from 'redux-thunk';
-import { FixedSizeList, ListOnItemsRenderedProps } from 'react-window';
 import AppItem from './AppItem';
 import { fetchNextPageAppList } from '../store/appList/actions';
 import AppItemModal from './AppModal/AppItemModal';
@@ -13,40 +11,36 @@ import {
     AppListFilter,
     areAppListFiltersEqual,
 } from '../store/appList/filter';
+import { AppHeadsListState, AppHead, AppHeadsList } from '../store/appList/types';
 
 interface OwnProps {
+    allApps: AppHeadsList;
     filter: AppListFilter;
-}
-
-interface StateProps {
-    fetchNextPageAppList: typeof fetchNextPageAppList;
-    appList: AppListState;
-}
-
-interface DispatchProps {
-    thunkFetchAppList: () => Promise<void>;
+    fetchMoreApps: () => Promise<void>;
 }
 
 interface OwnState {
     modalAppIdShow?: string;
-    filteredAppList: App[];
+    filteredAppList: AppHead[];
 }
 
-type Props = StateProps & DispatchProps & OwnProps;
+type Props = OwnProps;
 
-class AppList extends Component<Props, OwnState> {
+export default class AppListView extends Component<Props, OwnState> {
     constructor(props: Props) {
         super(props);
         this.state = {
             filteredAppList: filterAppList(
-                this.props.appList,
+                this.props.allApps,
                 this.props.filter,
             ),
         };
     }
 
     componentWillMount() {
-        this.props.thunkFetchAppList();
+        if (this.props.allApps.apps.length < 1) {
+            this.props.fetchMoreApps();
+        }
     }
 
     componentDidUpdate(
@@ -54,14 +48,14 @@ class AppList extends Component<Props, OwnState> {
         prevState: Readonly<OwnState>,
     ) {
         if (
-            prevProps.appList !== this.props.appList ||
+            prevProps.allApps !== this.props.allApps ||
             !areAppListFiltersEqual(prevProps.filter, this.props.filter)
         ) {
             this.setState((state) => {
                 return {
                     ...state,
                     filteredAppList: filterAppList(
-                        this.props.appList,
+                        this.props.allApps,
                         this.props.filter,
                     ),
                 };
@@ -74,10 +68,10 @@ class AppList extends Component<Props, OwnState> {
     private loadingRowsPromises: Promise<void>[] = [];
 
     async loadMoreItems(): Promise<void> {
-        if (this.props.appList.isNextRequestOngoing) {
+        if (this.props.allApps.isNextRequestOngoing) {
         }
         await Promise.all(this.loadingRowsPromises);
-        const fetching = this.props.thunkFetchAppList();
+        const fetching = this.props.fetchMoreApps();
         this.loadingRowsPromises.push(fetching);
         await fetching;
         for (let i = 0; i < this.loadingRowsPromises.length; i++) {
@@ -112,12 +106,12 @@ class AppList extends Component<Props, OwnState> {
                 </div>
                 <div
                     className={`button is-primary ${
-                        this.props.appList.isNextRequestOngoing
+                        this.props.allApps.isNextRequestOngoing
                             ? 'is-loading'
                             : ''
                     }`}
                     onClick={
-                        this.props.appList.isNextRequestOngoing
+                        this.props.allApps.isNextRequestOngoing
                             ? () => {}
                             : this.loadMoreItems.bind(this)
                     }
@@ -141,27 +135,27 @@ class AppList extends Component<Props, OwnState> {
     }
 }
 
-function mapStateToProps(state: AppState, ownProps: OwnProps): StateProps {
-    console.log('mapping...');
-    return {
-        fetchNextPageAppList,
-        appList: state.appList,
-    };
-}
+// function mapStateToProps(state: AppState, ownProps: OwnProps): StateProps {
+//     console.log('mapping...');
+//     return {
+//         fetchNextPageAppList,
+//         appListState: state.appList,
+//     };
+// }
 
-function mapDispatchToProps(
-    dispatch: ThunkDispatch<{}, {}, any>,
-    ownProps: OwnProps,
-): DispatchProps {
-    return {
-        thunkFetchAppList: async () => {
-            await dispatch(fetchNextPageAppList());
-            console.log('Fetch completed [UI]');
-        },
-    };
-}
+// function mapDispatchToProps(
+//     dispatch: ThunkDispatch<{}, {}, any>,
+//     ownProps: OwnProps,
+// ): DispatchProps {
+//     return {
+//         thunkFetchAppList: async () => {
+//             await dispatch(fetchNextPageAppList());
+//             console.log('Fetch completed [UI]');
+//         },
+//     };
+// }
 
-export default connect<StateProps, DispatchProps, OwnProps, AppState>(
-    mapStateToProps,
-    mapDispatchToProps,
-)(AppList);
+// export default connect<StateProps, DispatchProps, OwnProps, AppState>(
+//     mapStateToProps,
+//     mapDispatchToProps,
+// )(AppList);

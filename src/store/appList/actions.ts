@@ -1,10 +1,20 @@
-import { AppListActionTypes, FETCH_APPLIST_NEXT_PAGE, App } from './types';
+import {
+    AppListActionTypes,
+    AppHead,
+    FETCH_APPHEADLIST_NEXT_PAGE,
+    FETCH_WATCHFACEHEADLIST_NEXT_PAGE,
+} from './types';
 import { AppState } from '..';
 import { ThunkAction } from 'redux-thunk';
 import { fetchConfigurationData } from '../configuration/acions';
 import gql from 'graphql-tag';
 import { FitbitGalleryListResponseRoot } from '../../types/fitbitGalleryTypes';
 import { ConfigurationActionTypes } from '../configuration/types';
+
+export enum CategoryType {
+    allWatchFaces = 'c3c6d097-a255-4613-b817-d5d693f13318',
+    allApps = 'a406cc65-ebae-4e47-b1bd-7f86800bb2c6',
+}
 
 export function fetchNextPageAppList(): ThunkAction<
     void,
@@ -14,28 +24,27 @@ export function fetchNextPageAppList(): ThunkAction<
 > {
     return async (dispatch, getState) => {
         dispatch({
-            type: FETCH_APPLIST_NEXT_PAGE,
+            type: FETCH_APPHEADLIST_NEXT_PAGE,
             payload: {
                 isNextRequestOngoing: true,
-                doesMoreItemsExist: getState().appList.doesMoreItemsExist,
-                nextPageId: getState().appList.nextPageId,
+                doesMoreItemsExist: getState().appList.appsList
+                    .doesMoreItemsExist,
+                nextPageId: getState().appList.appsList.nextPageId,
                 apps: [],
             },
         });
-        console.log('before config fetch');
         if (!getState().config.galleryApiUrl) {
             dispatch(await fetchConfigurationData());
         }
-        console.log('after config fetch');
 
         const asyncResp = await fetchAppsList(
+            CategoryType.allApps,
             getState().config.authToken.accessToken,
             getState().config.galleryApiUrl,
-            getState().appList.nextPageId,
+            getState().appList.appsList.nextPageId,
         );
-        console.log('after apps list fetch');
         const appsList = asyncResp.data.collection.pagedApps.apps.map((a) => {
-            const app: App = {
+            const app: AppHead = {
                 name: a.name,
                 type: a.type,
                 developerName: a.developer.name,
@@ -49,7 +58,7 @@ export function fetchNextPageAppList(): ThunkAction<
         });
 
         dispatch({
-            type: FETCH_APPLIST_NEXT_PAGE,
+            type: FETCH_APPHEADLIST_NEXT_PAGE,
             payload: {
                 apps: appsList,
                 nextPageId: asyncResp.data.collection.pagedApps.nextPages[0],
@@ -60,7 +69,61 @@ export function fetchNextPageAppList(): ThunkAction<
     };
 }
 
+export function fetchNextPageWatchFaceList(): ThunkAction<
+    void,
+    AppState,
+    null,
+    AppListActionTypes | ConfigurationActionTypes
+> {
+    return async (dispatch, getState) => {
+        dispatch({
+            type: FETCH_WATCHFACEHEADLIST_NEXT_PAGE,
+            payload: {
+                isNextRequestOngoing: true,
+                doesMoreItemsExist: getState().appList.watchFacesList
+                    .doesMoreItemsExist,
+                nextPageId: getState().appList.watchFacesList.nextPageId,
+                watchFaces: [],
+            },
+        });
+        if (!getState().config.galleryApiUrl) {
+            dispatch(await fetchConfigurationData());
+        }
+
+        const asyncResp = await fetchAppsList(
+            CategoryType.allWatchFaces,
+            getState().config.authToken.accessToken,
+            getState().config.galleryApiUrl,
+            getState().appList.watchFacesList.nextPageId,
+        );
+        const watchFaceList = asyncResp.data.collection.pagedApps.apps.map((a) => {
+            const app: AppHead = {
+                name: a.name,
+                type: a.type,
+                developerName: a.developer.name,
+                description: a.description,
+                previewImage: a.previewImage.uri,
+                icon: a.icon.uri,
+                id: a.id,
+                isPaid: a.isPaid,
+            };
+            return app;
+        });
+
+        dispatch({
+            type: FETCH_WATCHFACEHEADLIST_NEXT_PAGE,
+            payload: {
+                watchFaces: watchFaceList,
+                nextPageId: asyncResp.data.collection.pagedApps.nextPages[0],
+                doesMoreItemsExist: true,
+                isNextRequestOngoing: false,
+            },
+        });
+    };
+}
+
 async function fetchAppsList(
+    categoryType: CategoryType,
     accessToken: string,
     apiUrl: string,
     nextPageKey?: string,
@@ -68,12 +131,11 @@ async function fetchAppsList(
     const bdy = {
         operationName: 'category',
         variables: {
-            id: 'c3c6d097-a255-4613-b817-d5d693f13318',
+            id: categoryType,
             pageKey: nextPageKey,
         },
         query: getCategory,
     };
-    console.log('noooooooooo');
     const result = await fetch(apiUrl, {
         method: 'POST',
         headers: {
