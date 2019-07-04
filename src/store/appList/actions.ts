@@ -48,7 +48,6 @@ export function fetchNextPageAppList(): ThunkAction<
                 name: a.name,
                 type: a.type,
                 developerName: a.developer.name,
-                description: a.description,
                 previewImage: a.previewImage.uri,
                 icon: a.icon.uri,
                 id: a.id,
@@ -101,7 +100,6 @@ export function fetchNextPageWatchFaceList(): ThunkAction<
                 name: a.name,
                 type: a.type,
                 developerName: a.developer.name,
-                description: a.description,
                 previewImage: a.previewImage.uri,
                 icon: a.icon.uri,
                 id: a.id,
@@ -134,7 +132,7 @@ async function fetchAppsList(
             id: categoryType,
             pageKey: nextPageKey,
         },
-        query: getCategory,
+        query: getAppListGql,
     };
     const result = await fetch(apiUrl, {
         method: 'POST',
@@ -148,7 +146,7 @@ async function fetchAppsList(
     return resultObj;
 }
 
-const getCategory = gql`
+const getAppListGql = gql`
   query category($id: ID!, $pageKey: ID) {
     collection: category(id: $id) {
       id

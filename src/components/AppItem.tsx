@@ -9,7 +9,6 @@ interface OwnProps {
         previewImage: string;
         icon: string;
         id: string;
-        description: string;
         isPaid: boolean;
     };
     onClick: () => void;

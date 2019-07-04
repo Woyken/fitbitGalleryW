@@ -5,7 +5,6 @@ export interface AppHead {
     previewImage: string;
     icon: string;
     id: string;
-    description: string;
     isPaid: boolean;
 }
 

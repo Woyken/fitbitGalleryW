@@ -1,28 +1,23 @@
 export interface FitbitGalleryListResponseDataCollectionPagedAppsAppPreviewImage {
     uri: string;
-    __typename: string;
 }
 
 export interface FitbitGalleryListResponseDataCollectionPagedAppsAppIcon {
     uri: string;
-    __typename: string;
 }
 
 export interface FitbitGalleryListResponseDataCollectionPagedAppsAppDeveloper {
     name: string;
-    __typename: string;
 }
 
 export interface FitbitGalleryListResponseDataCollectionPagedAppsApp {
     id: string;
     previewImage: FitbitGalleryListResponseDataCollectionPagedAppsAppPreviewImage;
     icon: FitbitGalleryListResponseDataCollectionPagedAppsAppIcon;
-    description: string;
     developer: FitbitGalleryListResponseDataCollectionPagedAppsAppDeveloper;
     name: string;
     type: string;
     isPaid: boolean;
-    __typename: string;
 }
 
 export interface FitbitGalleryListResponseDataCollectionPagedApps {
@@ -30,7 +25,6 @@ export interface FitbitGalleryListResponseDataCollectionPagedApps {
     nextPages: string[];
     prevPages: string[];
     offset: number;
-    __typename: string;
 }
 
 export interface FitbitGalleryListResponseDataCollection {
