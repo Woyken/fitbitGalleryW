@@ -1,22 +1,18 @@
 // tslint:disable-next-line: import-name
-import React, { Component, PureComponent } from 'react';
-import { connect } from 'react-redux';
-import { AppState } from '../store';
-import { ThunkDispatch } from 'redux-thunk';
+import React, { Component } from 'react';
 import AppItem from './AppItem';
-import { fetchNextPageAppList } from '../store/appList/actions';
 import AppItemModal from './AppModal/AppItemModal';
 import {
     filterAppList,
     AppListFilter,
     areAppListFiltersEqual,
 } from '../store/appList/filter';
-import { AppHeadsListState, AppHead, AppHeadsList } from '../store/appList/types';
+import { AppHead, AppHeadsList } from '../store/appList/types';
 
 interface OwnProps {
     allApps: AppHeadsList;
     filter: AppListFilter;
-    fetchMoreApps: () => Promise<void>;
+    fetchMoreApps?: () => Promise<void>;
 }
 
 interface OwnState {
@@ -38,7 +34,7 @@ export default class AppListView extends Component<Props, OwnState> {
     }
 
     componentWillMount() {
-        if (this.props.allApps.apps.length < 1) {
+        if (this.props.allApps.apps.length < 1 && this.props.fetchMoreApps) {
             this.props.fetchMoreApps();
         }
     }
@@ -49,7 +45,7 @@ export default class AppListView extends Component<Props, OwnState> {
     ) {
         if (
             prevProps.allApps !== this.props.allApps ||
-            !areAppListFiltersEqual(prevProps.filter, this.props.filter)
+            prevProps.filter !== this.props.filter
         ) {
             this.setState((state) => {
                 return {
@@ -68,6 +64,9 @@ export default class AppListView extends Component<Props, OwnState> {
     private loadingRowsPromises: Promise<void>[] = [];
 
     async loadMoreItems(): Promise<void> {
+        if (!this.props.fetchMoreApps) {
+            return;
+        }
         if (this.props.allApps.isNextRequestOngoing) {
         }
         await Promise.all(this.loadingRowsPromises);
@@ -104,20 +103,25 @@ export default class AppListView extends Component<Props, OwnState> {
                         </div>
                     ))}
                 </div>
-                <div
-                    className={`button is-primary ${
-                        this.props.allApps.isNextRequestOngoing
-                            ? 'is-loading'
-                            : ''
-                    }`}
-                    onClick={
-                        this.props.allApps.isNextRequestOngoing
-                            ? () => {}
-                            : this.loadMoreItems.bind(this)
-                    }
-                >
-                    Load more
-                </div>
+                {this.props.fetchMoreApps ? (
+                    <div
+                        className={`button is-primary ${
+                            this.props.allApps.isNextRequestOngoing
+                                ? 'is-loading'
+                                : ''
+                        }`}
+                        onClick={
+                            this.props.allApps.isNextRequestOngoing
+                                ? () => {}
+                                : this.loadMoreItems.bind(this)
+                        }
+                    >
+                        Load more
+                    </div>
+                ) : (
+                    ''
+                )}
+
                 <AppItemModal
                     appId={this.state.modalAppIdShow}
                     onClose={() => {

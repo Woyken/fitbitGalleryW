@@ -8,6 +8,7 @@ import { AppListFilter } from './store/appList/filter';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import WatchFaceList from './components/WatchFaceList';
 import AppsList from './components/AppsList';
+import SavedAppsList from './components/SavedAppsList/SavedAppsList';
 
 enum PriceFilterEnum {
     PaidFree,
@@ -50,6 +51,7 @@ class App extends Component<{}, OwnState> {
                             <TabList>
                                 <Tab><a>Watch Faces</a></Tab>
                                 <Tab><a>Apps</a></Tab>
+                                <Tab><a>Saved</a></Tab>
                             </TabList>
                         </div>
 
@@ -58,6 +60,9 @@ class App extends Component<{}, OwnState> {
                         </TabPanel>
                         <TabPanel>
                             <AppsList />
+                        </TabPanel>
+                        <TabPanel>
+                            <SavedAppsList />
                         </TabPanel>
                     </Tabs>
                 </div>
