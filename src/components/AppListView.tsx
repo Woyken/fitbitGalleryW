@@ -2,10 +2,7 @@
 import React, { Component } from 'react';
 import AppItem from './AppItem';
 import AppItemModal from './AppModal/AppItemModal';
-import {
-    filterAppList,
-    AppListFilter,
-} from '../store/appList/filter';
+import { filterAppList, AppListFilter } from '../store/appList/filter';
 import { AppHead, AppHeadsList } from '../store/appList/types';
 
 interface OwnProps {
@@ -30,12 +27,44 @@ export default class AppListView extends Component<Props, OwnState> {
                 this.props.filter,
             ),
         };
+        this.onScroll = this.onScroll.bind(this);
+    }
+
+    async onScroll(event: Event) {
+        if (!event.target) {
+            return;
+        }
+
+        const element = (event.target as any).scrollingElement || event.target;
+        if (
+            (element as any).scrollHeight - (element as any).scrollTop <=
+            (element as any).clientHeight * 2
+        ) {
+            if (
+                this.props.fetchMoreApps &&
+                !this.props.allApps.isNextRequestOngoing
+            ) {
+                await this.props.fetchMoreApps();
+            }
+        }
     }
 
     componentWillMount() {
-        if (this.props.allApps.apps.length < 1 && this.props.fetchMoreApps) {
+        if (
+            this.props.allApps.apps.length < 1 &&
+            this.props.fetchMoreApps &&
+            !this.props.allApps.isNextRequestOngoing
+        ) {
             this.props.fetchMoreApps();
         }
+    }
+
+    componentDidMount() {
+        window.addEventListener('scroll', this.onScroll, false);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.onScroll, false);
     }
 
     componentDidUpdate(
