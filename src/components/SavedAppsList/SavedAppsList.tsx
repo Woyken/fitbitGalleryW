@@ -84,11 +84,11 @@ class SavedAppsList extends Component<Props, OwnState> {
 
     private currentlyDownloadingItems: string[] = [];
 
-    downloadMissingItem(itemId: string) {
+    async downloadMissingItem(itemId: string) {
         if (this.currentlyDownloadingItems.findIndex((x) => x === itemId) < 0) {
             this.currentlyDownloadingItems.push(itemId);
-            this.props.fetchAppHead(itemId, AppType.App);
-            this.props.fetchAppHead(itemId, AppType.WatchFace);
+            await this.props.fetchAppHead(itemId, AppType.App);
+            await this.props.fetchAppHead(itemId, AppType.WatchFace);
         }
 
     }

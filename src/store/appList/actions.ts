@@ -123,7 +123,7 @@ export function fetchAppHead(
             isPaid: asyncResp.data.app.isPaid,
         };
 
-        if (type === 'APP') {
+        if (app.type === 'APP') {
             dispatch({
                 type: FETCH_APPHEADLIST_NEXT_PAGE,
                 payload: {
