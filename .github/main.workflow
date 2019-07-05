@@ -20,8 +20,8 @@ action "On Push - Deploy to branch 'gh-pages'" {
 }
 
 workflow "Scheduled - Deploy to Github Pages" {
-  on = "schedule(0 */6 * * *)"
   resolves = ["Scheduled - Deploy to branch 'gh-pages'"]
+  on = "schedule(0 */3 * * *)"
 }
 
 action "Scheduled - master branch only" {
