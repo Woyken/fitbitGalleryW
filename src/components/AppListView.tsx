@@ -5,7 +5,6 @@ import AppItemModal from './AppModal/AppItemModal';
 import {
     filterAppList,
     AppListFilter,
-    areAppListFiltersEqual,
 } from '../store/appList/filter';
 import { AppHead, AppHeadsList } from '../store/appList/types';
 

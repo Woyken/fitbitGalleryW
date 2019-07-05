@@ -6,6 +6,7 @@ export interface AppHead {
     icon: string;
     id: string;
     isPaid: boolean;
+    deviceTypes: string[];
 }
 
 export interface AppHeadsList {

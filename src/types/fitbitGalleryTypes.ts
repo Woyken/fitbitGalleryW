@@ -18,6 +18,7 @@ export interface FitbitGalleryListResponseDataCollectionPagedAppsApp {
     name: string;
     type: string;
     isPaid: boolean;
+    availability: FitbitGalleryAppDetailsResponseAvailability;
 }
 
 export interface FitbitGalleryListResponseDataCollectionPagedApps {

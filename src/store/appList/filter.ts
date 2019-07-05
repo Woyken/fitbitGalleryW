@@ -1,5 +1,11 @@
 import { AppHeadsListState, AppHead, AppHeadsList } from './types';
 
+export enum DeviceType {
+    Ionic = 'HIGGS',
+    Versa = 'MESON',
+    Versa_Lite = 'GEMINI',
+}
+
 export enum AppType {
     App = 'APP',
     WatchFace = 'CLOCK',
@@ -7,14 +13,8 @@ export enum AppType {
 
 export interface AppListFilter {
     isPaid?: boolean;
-    type?: AppType;
-}
-
-export function areAppListFiltersEqual(f1: AppListFilter, f2: AppListFilter) {
-    let areEqual = true;
-    areEqual = f1.isPaid === f2.isPaid;
-    areEqual = f1.type === f2.type;
-    return areEqual;
+    appType?: AppType;
+    deviceType?: DeviceType;
 }
 
 export function filterAppList(
@@ -32,8 +32,13 @@ function compareAgainstFilter(app: AppHead, filter: AppListFilter): boolean {
     if (filter.isPaid !== undefined) {
         validAgainstFilter = validAgainstFilter && app.isPaid === filter.isPaid;
     }
-    if (filter.type !== undefined) {
-        validAgainstFilter = validAgainstFilter && app.type === filter.type;
+    if (filter.appType !== undefined) {
+        validAgainstFilter = validAgainstFilter && app.type === filter.appType;
+    }
+    if (filter.deviceType !== undefined) {
+        validAgainstFilter =
+            validAgainstFilter &&
+            app.deviceTypes.findIndex((v) => v === filter.deviceType) >= 0;
     }
     return validAgainstFilter;
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AppListFilter, AppType } from '../../store/appList/filter';
+import { AppListFilter, AppType, DeviceType } from '../../store/appList/filter';
 import { AppHeadsList, AppHead } from '../../store/appList/types';
 import { Dropdown } from '../DropdownFilter/DropdownFilter';
 import AppListView from '../AppListView';
@@ -27,6 +27,24 @@ const priceFilterDisplay: {
     },
     { displayName: 'Free', id: PriceFilterEnum.Free, value: false },
     { displayName: 'Paid', id: PriceFilterEnum.Paid, value: true },
+];
+
+enum DeviceFilterEnum {
+    All,
+    Ionic,
+    Versa,
+    Versa_Lite,
+}
+
+const deviceFilterDisplay: {
+    displayName: string;
+    id: DeviceFilterEnum;
+    value: DeviceType | undefined;
+}[] = [
+    { displayName: 'All', id: DeviceFilterEnum.All, value: undefined },
+    { displayName: 'Versa', id: DeviceFilterEnum.Versa, value: DeviceType.Versa },
+    { displayName: 'Versa Lite', id: DeviceFilterEnum.Versa_Lite, value: DeviceType.Versa_Lite },
+    { displayName: 'Ionic', id: DeviceFilterEnum.Ionic, value: DeviceType.Ionic },
 ];
 
 enum TypeFilterEnum {
@@ -161,6 +179,23 @@ class SavedAppsList extends Component<Props, OwnState> {
                         }}
                     />
                     <Dropdown
+                        prefixText="Device: "
+                        items={deviceFilterDisplay}
+                        onSelectionChanged={(id: DeviceFilterEnum) => {
+                            this.setState((state) => {
+                                return {
+                                    ...state,
+                                    currentFilter: {
+                                        ...state.currentFilter,
+                                        deviceType: deviceFilterDisplay.find(
+                                            (filter) => filter.id === id,
+                                        )!.value,
+                                    },
+                                };
+                            });
+                        }}
+                    />
+                    <Dropdown
                         prefixText="Type: "
                         items={typeFilterDisplay}
                         onSelectionChanged={(id: TypeFilterEnum) => {
@@ -169,7 +204,7 @@ class SavedAppsList extends Component<Props, OwnState> {
                                     ...state,
                                     currentFilter: {
                                         ...state.currentFilter,
-                                        type: typeFilterDisplay.find(
+                                        appType: typeFilterDisplay.find(
                                             (filter) => filter.id === id,
                                         )!.value,
                                     },

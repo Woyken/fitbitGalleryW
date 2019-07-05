@@ -53,6 +53,7 @@ export function fetchNextPageAppList(): ThunkAction<
                 icon: a.icon.uri,
                 id: a.id,
                 isPaid: a.isPaid,
+                deviceTypes: a.availability.deviceTypes.map((v) => v.type),
             };
             return app;
         });
@@ -121,6 +122,7 @@ export function fetchAppHead(
             icon: asyncResp.data.app.icon.uri,
             id: asyncResp.data.app.id,
             isPaid: asyncResp.data.app.isPaid,
+            deviceTypes: asyncResp.data.app.availability.deviceTypes.map((v) => v.type),
         };
 
         if (type === 'APP') {
@@ -208,6 +210,7 @@ export function fetchNextPageWatchFaceList(): ThunkAction<
                     icon: a.icon.uri,
                     id: a.id,
                     isPaid: a.isPaid,
+                    deviceTypes: a.availability.deviceTypes.map((v) => v.type),
                 };
                 return app;
             },
@@ -279,6 +282,12 @@ const getAppListGql = gql`
 
   fragment appSummary on App {
     id
+    availability {
+        deviceTypes {
+            type
+            productName
+        }
+    }
     previewImage(scale: 1.0) {
       uri
     }

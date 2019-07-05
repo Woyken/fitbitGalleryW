@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../store';
 import { fetchNextPageWatchFaceList } from '../store/appList/actions';
-import { AppListFilter } from '../store/appList/filter';
+import { AppListFilter, DeviceType } from '../store/appList/filter';
 import { Dropdown } from './DropdownFilter/DropdownFilter';
 import { AppHeadsList } from '../store/appList/types';
 import { ThunkDispatch } from 'redux-thunk';
@@ -27,6 +27,25 @@ const priceFilterDisplay: {
     { displayName: 'Free', id: PriceFilterEnum.Free, value: false },
     { displayName: 'Paid', id: PriceFilterEnum.Paid, value: true },
 ];
+
+enum DeviceFilterEnum {
+    All,
+    Ionic,
+    Versa,
+    Versa_Lite,
+}
+
+const deviceFilterDisplay: {
+    displayName: string;
+    id: DeviceFilterEnum;
+    value: DeviceType | undefined;
+}[] = [
+    { displayName: 'All', id: DeviceFilterEnum.All, value: undefined },
+    { displayName: 'Versa', id: DeviceFilterEnum.Versa, value: DeviceType.Versa },
+    { displayName: 'Versa Lite', id: DeviceFilterEnum.Versa_Lite, value: DeviceType.Versa_Lite },
+    { displayName: 'Ionic', id: DeviceFilterEnum.Ionic, value: DeviceType.Ionic },
+];
+
 
 interface OwnState {
     currentFilter: AppListFilter;
@@ -66,6 +85,23 @@ class WatchFaceList extends Component<Props, OwnState> {
                                     currentFilter: {
                                         ...state.currentFilter,
                                         isPaid: priceFilterDisplay.find(
+                                            (filter) => filter.id === id,
+                                        )!.value,
+                                    },
+                                };
+                            });
+                        }}
+                    />
+                    <Dropdown
+                        prefixText="Device: "
+                        items={deviceFilterDisplay}
+                        onSelectionChanged={(id: DeviceFilterEnum) => {
+                            this.setState((state) => {
+                                return {
+                                    ...state,
+                                    currentFilter: {
+                                        ...state.currentFilter,
+                                        deviceType: deviceFilterDisplay.find(
                                             (filter) => filter.id === id,
                                         )!.value,
                                     },
