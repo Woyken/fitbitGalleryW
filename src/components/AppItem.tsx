@@ -1,5 +1,7 @@
 // tslint:disable-next-line: import-name
 import React, { Component } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
 
 interface OwnProps {
     item: {
@@ -31,8 +33,11 @@ export default class AppItem extends Component<OwnProps> {
                 </div>
                 <div className="card-content">
                     <div className="content">
-                        <h4>{this.props.item.name}</h4>
-                        {this.props.item.isPaid && <h2>PAID</h2>}
+                            <h4>{this.props.item.name}</h4>
+                            {this.props.item.isPaid && <FontAwesomeIcon
+                                icon={faCreditCard}
+                                size="2x"
+                            />}
                     </div>
                 </div>
             </div>
