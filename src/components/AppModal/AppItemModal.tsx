@@ -10,6 +10,7 @@ import 'react-alice-carousel/lib/alice-carousel.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons';
+import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import {
     saveApp,
     removeSavedApp,
@@ -174,8 +175,8 @@ class AppItemModal extends Component<Props, OwnState> {
                                 onClick={
                                     this.state.currentDetails.isSaved
                                         ? this.removeCurrentAppFromSaved.bind(
-                                              this,
-                                          )
+                                            this,
+                                        )
                                         : this.saveCurrentApp.bind(this)
                                 }
                             >
@@ -225,7 +226,7 @@ class AppItemModal extends Component<Props, OwnState> {
                                     className="button is-info"
                                     href={`https://gallery.fitbit.com/details/${
                                         this.state.currentDetails.id
-                                    }`}
+                                        }`}
                                     target="_blank"
                                 >
                                     To Fitbit
@@ -234,11 +235,23 @@ class AppItemModal extends Component<Props, OwnState> {
                                     className="button is-primary"
                                     href={`https://gallery.fitbit.com/details/${
                                         this.state.currentDetails.id
-                                    }/OpenApp`}
+                                        }/OpenApp`}
                                     target="_blank"
                                 >
                                     Open App
                                 </a>
+                                {this.state.currentDetails.isPaid && <div>
+                                    <FontAwesomeIcon
+                                        icon={faCreditCard}
+                                        size="2x"
+                                    />
+                                    <div
+                                        style={{ display: 'inline-block' }}
+                                        className="has-text-weight-bold"
+                                    >
+                                        This application requires a payment
+                                    </div>
+                                </div>}
                                 {this.state.currentDetails.description
                                     .split('\n')
                                     .map((item, i) => {
