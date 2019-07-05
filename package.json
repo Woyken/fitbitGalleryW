@@ -1,8 +1,8 @@
 {
-  "name": "fitbit-gallery-unofficial",
+  "name": "fitbitGalleryW",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://woyken.github.io/fitbit-gallery-unofficial",
+  "homepage": "https://woyken.github.io/fitbitGalleryW",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
     "@fortawesome/free-regular-svg-icons": "^5.9.0",
