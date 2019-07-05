@@ -123,6 +123,30 @@ export function fetchAppHead(
             isPaid: asyncResp.data.app.isPaid,
         };
 
+        if (type === 'APP') {
+            dispatch({
+                type: FETCH_APPHEADLIST_NEXT_PAGE,
+                payload: {
+                    isNextRequestOngoing: false,
+                    doesMoreItemsExist: getState().appList.appsList
+                        .doesMoreItemsExist,
+                    nextPageId: getState().appList.appsList.nextPageId,
+                    apps: [],
+                },
+            });
+        } else {
+            dispatch({
+                type: FETCH_WATCHFACEHEADLIST_NEXT_PAGE,
+                payload: {
+                    isNextRequestOngoing: false,
+                    doesMoreItemsExist: getState().appList.watchFacesList
+                        .doesMoreItemsExist,
+                    nextPageId: getState().appList.watchFacesList.nextPageId,
+                    watchFaces: [],
+                },
+            });
+        }
+
         if (app.type === 'APP') {
             dispatch({
                 type: FETCH_APPHEADLIST_NEXT_PAGE,
