@@ -3,6 +3,7 @@ import {
     AppHead,
     FETCH_APPHEADLIST_NEXT_PAGE,
     FETCH_WATCHFACEHEADLIST_NEXT_PAGE,
+    SEARCH_APPS_AND_WATCHFACES,
 } from './types';
 import { AppState } from '..';
 import { ThunkAction } from 'redux-thunk';
@@ -11,6 +12,7 @@ import gql from 'graphql-tag';
 import { FitbitGalleryListResponseRoot } from '../../types/fitbitGalleryTypes';
 import { ConfigurationActionTypes } from '../configuration/types';
 import { AppDetails } from '../../actions/getAppDetails';
+import { SearchApps } from '../../actions/searchApps';
 
 export enum CategoryType {
     allWatchFaces = 'c3c6d097-a255-4613-b817-d5d693f13318',
@@ -122,7 +124,9 @@ export function fetchAppHead(
             icon: asyncResp.data.app.icon.uri,
             id: asyncResp.data.app.id,
             isPaid: asyncResp.data.app.isPaid,
-            deviceTypes: asyncResp.data.app.availability.deviceTypes.map((v) => v.type),
+            deviceTypes: asyncResp.data.app.availability.deviceTypes.map(
+                (v) => v.type,
+            ),
         };
 
         if (type === 'APP') {
@@ -302,3 +306,92 @@ const getAppListGql = gql`
     isPaid
   }
 `;
+
+export function searchAppHeaders(
+    searchText: string,
+): ThunkAction<
+    void,
+    AppState,
+    null,
+    AppListActionTypes | ConfigurationActionTypes
+> {
+    return async (dispatch, getState) => {
+        dispatch({
+            type: SEARCH_APPS_AND_WATCHFACES,
+            payload: {
+                isNextRequestOngoing: true,
+                watchFaces: [],
+            },
+        });
+
+        if (!getState().config.galleryApiUrl) {
+            dispatch(await fetchConfigurationData());
+        }
+
+        const asyncResp = await SearchApps.searchApps(
+            getState().config.authToken.accessToken,
+            getState().config.galleryApiUrl,
+            searchText,
+        );
+
+        const apps = asyncResp.data.appResults.apps.map((a) => {
+            const app: AppHead = {
+                name: a.name,
+                type: a.type,
+                developerName: a.name,
+                previewImage: a.previewImage.uri,
+                icon: a.icon.uri,
+                id: a.id,
+                isPaid: a.isPaid,
+                deviceTypes: a.availability.deviceTypes.map((v) => v.type),
+            };
+            return app;
+        });
+
+        const watchfaces = asyncResp.data.clockResults.apps.map((a) => {
+            const app: AppHead = {
+                name: a.name,
+                type: a.type,
+                developerName: a.name,
+                previewImage: a.previewImage.uri,
+                icon: a.icon.uri,
+                id: a.id,
+                isPaid: a.isPaid,
+                deviceTypes: a.availability.deviceTypes.map((v) => v.type),
+            };
+            return app;
+        });
+
+        dispatch({
+            type: SEARCH_APPS_AND_WATCHFACES,
+            payload: {
+                isNextRequestOngoing: false,
+                watchFaces: [...apps, ...watchfaces],
+            },
+        });
+
+        dispatch({
+            type: FETCH_APPHEADLIST_NEXT_PAGE,
+            payload: {
+                apps,
+                nextPageId: getState().appList.appsList.nextPageId,
+                doesMoreItemsExist: getState().appList.appsList
+                    .doesMoreItemsExist,
+                isNextRequestOngoing: getState().appList.appsList
+                    .isNextRequestOngoing,
+            },
+        });
+
+        dispatch({
+            type: FETCH_WATCHFACEHEADLIST_NEXT_PAGE,
+            payload: {
+                watchFaces: watchfaces,
+                nextPageId: getState().appList.watchFacesList.nextPageId,
+                doesMoreItemsExist: getState().appList.watchFacesList
+                    .doesMoreItemsExist,
+                isNextRequestOngoing: getState().appList.watchFacesList
+                    .isNextRequestOngoing,
+            },
+        });
+    };
+}

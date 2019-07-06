@@ -9,9 +9,9 @@ import WatchFaceList from './components/WatchFaceList';
 import AppsList from './components/AppsList';
 import SavedAppsList from './components/SavedAppsList/SavedAppsList';
 import About from './components/About/About';
+import SearchAppsList from './components/SearchAppsList/SearchAppsList';
 
 class App extends Component {
-
     render() {
         return (
             <Provider store={store}>
@@ -19,10 +19,21 @@ class App extends Component {
                     <Tabs selectedTabClassName="is-active">
                         <div className="tabs is-centered is-boxed">
                             <TabList>
-                                <Tab><a>Watch Faces</a></Tab>
-                                <Tab><a>Apps</a></Tab>
-                                <Tab><a>Saved</a></Tab>
-                                <Tab><a>About</a></Tab>
+                                <Tab>
+                                    <a>Watch Faces</a>
+                                </Tab>
+                                <Tab>
+                                    <a>Apps</a>
+                                </Tab>
+                                <Tab>
+                                    <a>Search</a>
+                                </Tab>
+                                <Tab>
+                                    <a>Saved</a>
+                                </Tab>
+                                <Tab>
+                                    <a>About</a>
+                                </Tab>
                             </TabList>
                         </div>
 
@@ -31,6 +42,9 @@ class App extends Component {
                         </TabPanel>
                         <TabPanel>
                             <AppsList />
+                        </TabPanel>
+                        <TabPanel>
+                            <SearchAppsList />
                         </TabPanel>
                         <TabPanel>
                             <SavedAppsList />

@@ -116,3 +116,26 @@ export interface FitbitGalleryAppDetailsResponseData {
 export interface FitbitGalleryAppDetailsResponseRoot {
     data: FitbitGalleryAppDetailsResponseData;
 }
+
+export interface FitbitGallerySearchListResponseDataAppResults {
+    apps: FitbitGalleryListResponseDataCollectionPagedAppsApp[];
+    nextPages: any[];
+    prevPages: any[];
+    offset: number;
+}
+
+export interface FitbitGallerySearchListResponseDataClockResults {
+    apps: FitbitGalleryListResponseDataCollectionPagedAppsApp[];
+    nextPages: any[];
+    prevPages: any[];
+    offset: number;
+}
+
+export interface FitbitGallerySearchListResponseData {
+    appResults: FitbitGallerySearchListResponseDataAppResults;
+    clockResults: FitbitGallerySearchListResponseDataClockResults;
+}
+
+export interface FitbitGallerySearchListResponseRoot {
+    data: FitbitGallerySearchListResponseData;
+}

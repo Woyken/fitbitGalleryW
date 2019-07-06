@@ -4,6 +4,7 @@ import {
     FETCH_APPHEADLIST_NEXT_PAGE,
     FETCH_WATCHFACEHEADLIST_NEXT_PAGE,
     AppHead,
+    SEARCH_APPS_AND_WATCHFACES,
 } from './types';
 
 const initialState: AppHeadsListState = {
@@ -19,6 +20,12 @@ const initialState: AppHeadsListState = {
         nextPageId: '',
         isNextRequestOngoing: false,
     },
+    lastSearchResult: {
+        apps: [],
+        doesMoreItemsExist: false,
+        isNextRequestOngoing: false,
+        nextPageId: '',
+    },
 };
 
 export function appListReducer(
@@ -27,7 +34,10 @@ export function appListReducer(
 ): AppHeadsListState {
     switch (action.type) {
         case FETCH_APPHEADLIST_NEXT_PAGE: {
-            const fullAppsList = [...state.appsList.apps, ...action.payload.apps];
+            const fullAppsList = [
+                ...state.appsList.apps,
+                ...action.payload.apps,
+            ];
             const filteredAppsList: AppHead[] = [];
             const tempMap = new Map<string, boolean>();
             for (const item of fullAppsList) {
@@ -44,11 +54,15 @@ export function appListReducer(
                     isNextRequestOngoing: action.payload.isNextRequestOngoing,
                 },
                 watchFacesList: state.watchFacesList,
+                lastSearchResult: state.lastSearchResult,
             };
         }
 
         case FETCH_WATCHFACEHEADLIST_NEXT_PAGE: {
-            const fullAppsList = [...state.watchFacesList.apps, ...action.payload.watchFaces];
+            const fullAppsList = [
+                ...state.watchFacesList.apps,
+                ...action.payload.watchFaces,
+            ];
             const filteredAppsList: AppHead[] = [];
             const tempMap = new Map<string, boolean>();
             for (const item of fullAppsList) {
@@ -65,9 +79,22 @@ export function appListReducer(
                     isNextRequestOngoing: action.payload.isNextRequestOngoing,
                 },
                 appsList: state.appsList,
+                lastSearchResult: state.lastSearchResult,
             };
         }
 
+        case SEARCH_APPS_AND_WATCHFACES: {
+            return {
+                appsList: state.appsList,
+                watchFacesList: state.watchFacesList,
+                lastSearchResult: {
+                    apps: [...action.payload.watchFaces],
+                    doesMoreItemsExist: false,
+                    nextPageId: '',
+                    isNextRequestOngoing: action.payload.isNextRequestOngoing,
+                },
+            };
+        }
 
         default:
             return state;
