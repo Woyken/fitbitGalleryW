@@ -1,0 +1,25 @@
+name: On push - deploy to gh-branches
+
+on: 
+  push:
+    branches:    
+      - master
+  schedule:
+    - cron: 0 */3 * * *
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Deploy to branch 'gh-pages'
+      uses: JamesIves/github-pages-deploy-action@master
+      env:
+        BRANCH: gh-pages
+        BUILD_SCRIPT: npm install && npm run-script build
+        FOLDER: build
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
