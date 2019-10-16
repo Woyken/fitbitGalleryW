@@ -34,6 +34,7 @@ enum DeviceFilterEnum {
     Ionic,
     Versa,
     Versa_Lite,
+    Versa2,
 }
 
 const deviceFilterDisplay: {
@@ -44,6 +45,7 @@ const deviceFilterDisplay: {
     { displayName: 'All', id: DeviceFilterEnum.All, value: undefined },
     { displayName: 'Versa', id: DeviceFilterEnum.Versa, value: DeviceType.Versa },
     { displayName: 'Versa Lite', id: DeviceFilterEnum.Versa_Lite, value: DeviceType.Versa_Lite },
+    { displayName: 'Versa 2', id: DeviceFilterEnum.Versa2, value: DeviceType.Versa2 },
     { displayName: 'Ionic', id: DeviceFilterEnum.Ionic, value: DeviceType.Ionic },
 ];
 
