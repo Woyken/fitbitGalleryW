@@ -4,6 +4,7 @@ export enum DeviceType {
     Ionic = 'HIGGS',
     Versa = 'MESON',
     Versa_Lite = 'GEMINI',
+    Versa2 = 'MIRA',
 }
 
 export enum AppType {
