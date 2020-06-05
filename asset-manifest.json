@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/fitbitGalleryW/static/css/main.f1df45ef.chunk.css",
+    "main.js": "/fitbitGalleryW/static/js/main.0d995f85.chunk.js",
+    "main.js.map": "/fitbitGalleryW/static/js/main.0d995f85.chunk.js.map",
+    "runtime-main.js": "/fitbitGalleryW/static/js/runtime-main.35837c7a.js",
+    "runtime-main.js.map": "/fitbitGalleryW/static/js/runtime-main.35837c7a.js.map",
+    "static/css/2.37e0a4a1.chunk.css": "/fitbitGalleryW/static/css/2.37e0a4a1.chunk.css",
+    "static/js/2.40a8190b.chunk.js": "/fitbitGalleryW/static/js/2.40a8190b.chunk.js",
+    "static/js/2.40a8190b.chunk.js.map": "/fitbitGalleryW/static/js/2.40a8190b.chunk.js.map",
+    "index.html": "/fitbitGalleryW/index.html",
+    "precache-manifest.bb64ef21aaa6ed7ecc2e63c1d109fb1f.js": "/fitbitGalleryW/precache-manifest.bb64ef21aaa6ed7ecc2e63c1d109fb1f.js",
+    "service-worker.js": "/fitbitGalleryW/service-worker.js",
+    "static/css/2.37e0a4a1.chunk.css.map": "/fitbitGalleryW/static/css/2.37e0a4a1.chunk.css.map",
+    "static/css/main.f1df45ef.chunk.css.map": "/fitbitGalleryW/static/css/main.f1df45ef.chunk.css.map",
+    "static/js/2.40a8190b.chunk.js.LICENSE.txt": "/fitbitGalleryW/static/js/2.40a8190b.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.35837c7a.js",
+    "static/css/2.37e0a4a1.chunk.css",
+    "static/js/2.40a8190b.chunk.js",
+    "static/css/main.f1df45ef.chunk.css",
+    "static/js/main.0d995f85.chunk.js"
+  ]
+}
