@@ -43,10 +43,9 @@
   "scripts": {
     "start": "react-scripts start",
     "react-build": "react-scripts build",
-    "build": "npm run fetch-configuration && npm run react-build",
+    "build": "npm run react-build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "fetch-configuration": "tsc src/tools/fetchNewConfiguration.ts && node src/tools/fetchNewConfiguration.js"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
