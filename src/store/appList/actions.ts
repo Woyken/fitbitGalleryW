@@ -7,7 +7,7 @@ import {
 } from './types';
 import { AppState } from '..';
 import { ThunkAction } from 'redux-thunk';
-import { fetchConfigurationData } from '../configuration/acions';
+import { fetchConfigurationData } from '../configuration/actions';
 import gql from 'graphql-tag';
 import { FitbitGalleryListResponseRoot } from '../../types/fitbitGalleryTypes';
 import { ConfigurationActionTypes } from '../configuration/types';
