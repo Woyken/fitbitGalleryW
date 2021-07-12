@@ -27,7 +27,7 @@ export default class AppItem extends Component<OwnProps> {
                     <figure className="image">
                         <img
                             src={this.props.item.previewImage}
-                            alt="Preview Image"
+                            alt="Preview"
                         />
                     </figure>
                 </div>

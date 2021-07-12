@@ -159,7 +159,7 @@ class AppItemModal extends Component<Props, OwnState> {
                                                     <div className="image">
                                                         <img
                                                             src={screenshot.uri}
-                                                            alt="Placeholder image"
+                                                            alt="Placeholder"
                                                         />
                                                     </div>
                                                 );
@@ -227,6 +227,7 @@ class AppItemModal extends Component<Props, OwnState> {
                                         this.state.currentDetails.id
                                     }`}
                                     target="_blank"
+                                    rel="noreferrer"
                                 >
                                     To Fitbit
                                 </a>
@@ -236,6 +237,7 @@ class AppItemModal extends Component<Props, OwnState> {
                                         this.state.currentDetails.id
                                     }/OpenApp`}
                                     target="_blank"
+                                    rel="noreferrer"
                                 >
                                     Open App
                                 </a>

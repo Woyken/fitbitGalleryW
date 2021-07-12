@@ -64,7 +64,7 @@ export class Dropdown extends Component<OwnProps, OwnState> {
                         {this.props.items.map((item) => {
                             return (
                                 <a
-                                    href="#"
+                                    href="#/SelectItem"
                                     className={`dropdown-item ${
                                         item.id === this.state.selectedItem.id
                                             ? 'is-active'

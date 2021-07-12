@@ -20,19 +20,19 @@ class App extends Component {
                         <div className="tabs is-centered is-boxed">
                             <TabList>
                                 <Tab>
-                                    <a>Watch Faces</a>
+                                    <a href='#/WatchFaces'>Watch Faces</a>
                                 </Tab>
                                 <Tab>
-                                    <a>Apps</a>
+                                    <a href='#/Apps'>Apps</a>
                                 </Tab>
                                 <Tab>
-                                    <a>Search</a>
+                                    <a href='#/Search'>Search</a>
                                 </Tab>
                                 <Tab>
-                                    <a>Saved</a>
+                                    <a href='#/Saved'>Saved</a>
                                 </Tab>
                                 <Tab>
-                                    <a>About</a>
+                                    <a href='#/About'>About</a>
                                 </Tab>
                             </TabList>
                         </div>

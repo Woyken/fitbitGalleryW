@@ -27,6 +27,7 @@ export default class SavedAppsList extends Component {
                                     <p>For anyone concerned, you can look at the source files here</p>
                                     <a
                                         href="https://github.com/Woyken/fitbitGalleryW"
+                                        rel="noreferrer"
                                         target="_blank"
                                         className="button is-primary is-medium"
                                     >

@@ -1,13 +1,12 @@
-import React, { Component, FormEvent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppListFilter, AppType, DeviceType } from '../../store/appList/filter';
-import { AppHeadsList, AppHead } from '../../store/appList/types';
+import { AppHeadsList } from '../../store/appList/types';
 import { Dropdown } from '../DropdownFilter/DropdownFilter';
 import AppListView from '../AppListView';
 import { AppState } from '../../store';
 import { ThunkDispatch } from 'redux-thunk';
-import { SavedApp } from '../../store/savedApps/types';
-import { fetchAppHead, searchAppHeaders } from '../../store/appList/actions';
+import { searchAppHeaders } from '../../store/appList/actions';
 
 enum PriceFilterEnum {
     PaidFree,

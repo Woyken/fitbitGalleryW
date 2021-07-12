@@ -1,4 +1,4 @@
-import { AppHeadsListState, AppHead, AppHeadsList } from './types';
+import { AppHead, AppHeadsList } from './types';
 
 export enum DeviceType {
     Ionic = 'HIGGS',
