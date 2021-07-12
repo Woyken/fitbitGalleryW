@@ -245,6 +245,7 @@ function mapDispatchToProps(
                     break;
                 case AppType.WatchFace:
                     await dispatch(fetchAppHead(id, 'WATCHFACE'));
+                    break;
                 default:
                     break;
             }

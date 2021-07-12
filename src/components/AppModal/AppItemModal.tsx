@@ -148,7 +148,6 @@ class AppItemModal extends Component<Props, OwnState> {
                             <div className="columns is-centered is-mobile">
                                 <div className="column is-5">
                                     <AliceCarousel
-                                        mouseDragEnabled
                                         autoPlay
                                         autoPlayInterval={3000}
                                         buttonsDisabled
