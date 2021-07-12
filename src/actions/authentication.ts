@@ -15,12 +15,11 @@ export interface AuthToken {
 }
 
 /**
- * Be careful to not make too many requests to this endpoint.
- * using public cors everywhere website for now. https://cors-anywhere.herokuapp.com/
+ * Be careful to not make too many requests to this endpoint, this heroku instance is not that powerful
  * @param url url to send request with cors ignored
  */
 async function getRequestWrappedCorsEverywhere<T>(url: string): Promise<T> {
-    const res = await pRetry(() => fetch(`https://cors-anywhere.herokuapp.com/${url}`));
+    const res = await pRetry(() => fetch(`https://woyken-service.herokuapp.com/cors-everywhere/${url}`));
     // Let's hope T type was passed correctly
     return await res.json() as T;
 }
