@@ -10,10 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2.2.0
+      
+    - name: Install dependencies
+    - run: npm install
+    - run: npm run-script build
+    
     - name: Deploy to branch 'gh-pages'
-      uses: JamesIves/github-pages-deploy-action@master
+      uses: JamesIves/github-pages-deploy-action@4.1.4
       env:
-        BRANCH: gh-pages
-        BUILD_SCRIPT: npm install && npm run-script build
-        FOLDER: build
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        branch: gh-pages
+        folder: build
