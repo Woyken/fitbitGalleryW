@@ -24,6 +24,7 @@
     "graphql-tag": "^2.10.1",
     "node-fetch": "^2.6.0",
     "node-sass": "^4.14.1",
+    "p-retry": "^4.6.0",
     "react": "^16.8.6",
     "react-alice-carousel": "^1.14.0",
     "react-apollo": "^2.5.6",

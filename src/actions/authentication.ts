@@ -1,3 +1,5 @@
+import pRetry from "p-retry";
+
 export interface FitbitAuthResponse {
     apiConfig: APIConfig;
 }
@@ -18,7 +20,7 @@ export interface AuthToken {
  * @param url url to send request with cors ignored
  */
 async function getRequestWrappedCorsEverywhere<T>(url: string): Promise<T> {
-    const res = await fetch(`https://cors-anywhere.herokuapp.com/${url}`);
+    const res = await pRetry(() => fetch(`https://cors-anywhere.herokuapp.com/${url}`));
     // Let's hope T type was passed correctly
     return await res.json() as T;
 }
