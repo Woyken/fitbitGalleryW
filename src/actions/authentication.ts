@@ -19,7 +19,7 @@ export interface AuthToken {
  * @param url url to send request with cors ignored
  */
 async function getRequestWrappedCorsEverywhere<T>(url: string): Promise<T> {
-    const res = await pRetry(() => fetch(`https://woyken-service.herokuapp.com/cors-everywhere/${url}`));
+    const res = await pRetry(() => fetch(`https://woyken-service.herokuapp.com/cors-anywhere/${url}`));
     // Let's hope T type was passed correctly
     return await res.json() as T;
 }
