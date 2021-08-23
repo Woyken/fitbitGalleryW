@@ -6,17 +6,17 @@
     "runtime-main.js": "/fitbitGalleryW/static/js/runtime-main.7dd23002.js",
     "runtime-main.js.map": "/fitbitGalleryW/static/js/runtime-main.7dd23002.js.map",
     "static/css/2.cd9ea234.chunk.css": "/fitbitGalleryW/static/css/2.cd9ea234.chunk.css",
-    "static/js/2.6eff7e99.chunk.js": "/fitbitGalleryW/static/js/2.6eff7e99.chunk.js",
-    "static/js/2.6eff7e99.chunk.js.map": "/fitbitGalleryW/static/js/2.6eff7e99.chunk.js.map",
+    "static/js/2.182431bd.chunk.js": "/fitbitGalleryW/static/js/2.182431bd.chunk.js",
+    "static/js/2.182431bd.chunk.js.map": "/fitbitGalleryW/static/js/2.182431bd.chunk.js.map",
     "index.html": "/fitbitGalleryW/index.html",
     "static/css/2.cd9ea234.chunk.css.map": "/fitbitGalleryW/static/css/2.cd9ea234.chunk.css.map",
     "static/css/main.9c140ec3.chunk.css.map": "/fitbitGalleryW/static/css/main.9c140ec3.chunk.css.map",
-    "static/js/2.6eff7e99.chunk.js.LICENSE.txt": "/fitbitGalleryW/static/js/2.6eff7e99.chunk.js.LICENSE.txt"
+    "static/js/2.182431bd.chunk.js.LICENSE.txt": "/fitbitGalleryW/static/js/2.182431bd.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.7dd23002.js",
     "static/css/2.cd9ea234.chunk.css",
-    "static/js/2.6eff7e99.chunk.js",
+    "static/js/2.182431bd.chunk.js",
     "static/css/main.9c140ec3.chunk.css",
     "static/js/main.5754c289.chunk.js"
   ]
