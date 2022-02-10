@@ -23,7 +23,7 @@
     "graphql": "^14.3.1",
     "graphql-tag": "^2.10.1",
     "node-fetch": "^2.6.0",
-    "node-sass": "^6.0.1",
+    "node-sass": "^7.0.0",
     "p-retry": "^4.6.1",
     "react": "^16.8.6",
     "react-alice-carousel": "^1.14.0",
